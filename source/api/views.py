@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, permissions
 from rest_framework.permissions import AllowAny, IsAuthenticated, DjangoModelPermissions, SAFE_METHODS
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -30,11 +30,16 @@ class CommentViewSet(viewsets.ModelViewSet):
         return Response({'text': comment.text, 'author': comment.author.username, 'date_create': comment.date_create,
                          'id': comment.id}, status=status.HTTP_200_OK)
 
-    # def dispatch(self, request, *args, **kwargs):
-    #     obj = self.get_object()
-    #     if obj.author != self.request.user or self.request.user.has_perm('webapp:comment_delete'):
-    #         return super().dispatch(request, *args, **kwargs)
-    #     return Response(status=status.HTTP_403_FORBIDDEN)
+    # def get_permissions(self):
+        # if self.request.method in SAFE_METHODS or self.request.method == 'POST':
+        #     return []
+        # if self.action in ['destroy']:
+        #     return [IsAuthenticated, DjangoModelPermissions]
+        # if self.action in ['update', 'partial_update']:
+        #     obj = self.get_object()
+        #     if obj.author != self.request.user or self.request.user.has_perm('webapp:delete_comment'):
+        #         return [AllowAny]
+        # return [IsAuthenticated]
 
 
 class PhotoViewSet(viewsets.ModelViewSet, DjangoModelPermissions):

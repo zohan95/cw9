@@ -38,7 +38,7 @@ class ChangeView(UpdateView):
 
     def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
-        if obj.author != self.request.user or self.request.user.has_perm('webapp:delete_photo'):
+        if obj.author == self.request.user or self.request.user.has_perm('webapp:delete_photo'):
             return super().dispatch(request, *args, **kwargs)
         raise PermissionDenied()
 
@@ -51,7 +51,7 @@ class PhotoDeleteView(LoginRequiredMixin, DeleteView):
 
     def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
-        if obj.author != self.request.user or self.request.user.has_perm('webapp:delete_photo'):
+        if obj.author == self.request.user or self.request.user.has_perm('webapp:delete_photo'):
             return super().delete(request, *args, **kwargs)
         raise PermissionDenied()
 

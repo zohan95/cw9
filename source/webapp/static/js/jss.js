@@ -6,7 +6,6 @@ function getCookie(name) {
         var cookies = document.cookie.split(';');
         for (var i = 0; i < cookies.length; i++) {
             var cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
             if (cookie.substring(0, name.length + 1) === (name + '=')) {
                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                 break;
@@ -21,6 +20,7 @@ function getCookie(name) {
 function commentCreate() {
     var csrftoken = getCookie('csrftoken');
     var comLabel = $('#comment_label_id');
+    let curUser = $('#cur_user_id').val();
     $.ajax({
 
         url: baseUrl + 'comments/',
@@ -33,7 +33,7 @@ function commentCreate() {
 
         data: JSON.stringify({
             text: $('#comment-text').val(),
-            author: comLabel.attr('data-author'),
+            author: curUser,
             photo: comLabel.attr('data-id')
         }),
 
