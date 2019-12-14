@@ -45,7 +45,7 @@ function commentCreate() {
             let myDiv = $('.comments');
             let newDiv = $(document.createElement('div'));
             newDiv.addClass('card text-center mt-2');
-            newDiv.attr('id', 'comment_id'+response.id);
+            newDiv.attr('id', 'comment_id_'+response.id);
             let newDiv1 = $(document.createElement('div'));
             newDiv1.addClass('card-header');
             let hText = $(document.createElement('h4'));
@@ -70,6 +70,7 @@ function commentCreate() {
             newDiv3.text(response.date_create);
             newDiv.append(newDiv3);
             myDiv.append(newDiv);
+            $('#comment-text').val('')
 
         },
         error: function () {

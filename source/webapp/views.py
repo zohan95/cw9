@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -27,20 +28,22 @@ class DetailedView(DetailView):
         return context
 
 
-class ChangeView(UpdateView):
+class ChangeView(LoginRequiredMixin, PermissionRequiredMixin,UpdateView):
+    permission_required = 'webapp.change_photo'
     model = Photo
     template_name = 'update.html'
     fields = ['photo', 'sign']
     success_url = reverse_lazy('index_url')
 
 
-class PhotoDeleteView(DeleteView):
+class PhotoDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    permission_required = 'webapp.delete_photo'
     model = Photo
     template_name = 'delete.html'
     success_url = reverse_lazy('index_url')
 
 
-class PhotoCreateView(CreateView):
+class PhotoCreateView(LoginRequiredMixin,CreateView):
     model = Photo
     template_name = 'create.html'
     fields = ['photo', 'sign']

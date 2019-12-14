@@ -1,8 +1,7 @@
 from django.contrib.auth.models import User
 from django.http import JsonResponse
-from django.shortcuts import render
 from rest_framework import viewsets, status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated, DjangoModelPermissions, SAFE_METHODS
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -11,9 +10,16 @@ from webapp.models import Comment, Photo
 
 
 class CommentViewSet(viewsets.ModelViewSet):
-
+    permission_classes = [IsAuthenticated, ]
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+
+    def get_permissions(self):
+        if self.request.method in SAFE_METHODS or self.request.method == 'POST':
+            return []
+
+        return super().get_permissions()
+
 
     def create(self, request, *args, **kwargs):
         print(request.data)
@@ -23,14 +29,20 @@ class CommentViewSet(viewsets.ModelViewSet):
         return Response({'text':comment.text, 'author':comment.author.username, 'date_create': comment.date_create,'id':comment.id}, status=status.HTTP_200_OK)
 
 
-
-class PhotoViewSet(viewsets.ModelViewSet):
+class PhotoViewSet(viewsets.ModelViewSet, DjangoModelPermissions):
+    permission_classes = [DjangoModelPermissions, IsAuthenticated]
     queryset = Photo.objects.all()
     serializer_class = PhotoSerializer
 
+    def get_permissions(self):
+        if self.request.method in SAFE_METHODS or self.request.method == 'POST':
+            return []
+
+        return super().get_permissions()
+
 
 class RateView(APIView):
-    permission_classes = [AllowAny, ]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
         photo = Photo.objects.get(pk=kwargs['pk'])
