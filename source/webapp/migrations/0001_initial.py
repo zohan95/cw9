@@ -6,7 +6,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -22,7 +21,8 @@ class Migration(migrations.Migration):
                 ('sign', models.CharField(max_length=63, verbose_name='Подпись')),
                 ('date_create', models.DateTimeField(auto_now_add=True)),
                 ('likes', models.IntegerField(default=0, verbose_name='Лайки')),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='photo_user', to=settings.AUTH_USER_MODEL, verbose_name='Автор')),
+                ('author', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='photo_user',
+                                             to=settings.AUTH_USER_MODEL, verbose_name='Автор')),
                 ('liked', models.ManyToManyField(blank=True, related_name='user_liked', to=settings.AUTH_USER_MODEL)),
             ],
         ),
@@ -32,8 +32,10 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('text', models.TextField(max_length=255, verbose_name='Комментарий')),
                 ('date_create', models.DateTimeField(auto_now_add=True)),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='comment_author', to=settings.AUTH_USER_MODEL, verbose_name='Автор')),
-                ('photo', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comment_photo', to='webapp.Photo', verbose_name='Фотография')),
+                ('author', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='comment_author',
+                                             to=settings.AUTH_USER_MODEL, verbose_name='Автор')),
+                ('photo', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comment_photo',
+                                            to='webapp.Photo', verbose_name='Фотография')),
             ],
         ),
     ]

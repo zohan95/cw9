@@ -1,38 +1,45 @@
 {% extends 'base.html' %}
 {% block menu %}
+    {% if user.is_authenticated %}
     <li class="nav-item active">
         <a class="nav-link" href="{% url 'create_url' %}">Создать</a>
-      </li>
+    </li>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
     <div class="container">
-    {% for i in object_list %}
-        <div class="row no-gutters mb-3 card-1">
-            <div class="col-md-4">
-                <a href="{% url 'details_url' i.pk %}"><img src="{{ i.photo.url }}" class="card-img" alt="{{ i.sign }}"></a>
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title">{{ i.sign }}</h5>
-                    <p class="card-text">Author: {{ i.author }}</p>
-                    <p class="card-text">
-                        <small class="text-muted">{{ i.date_create }}</small>
-                    </p>
-                    <p class="card-text">
-                        <small class="text-muted">likes: {{ i.likes }}</small>
-                    </p>
-                    <div>
-                        <a href="{% url 'change_url' i.pk %}" class="btn btn-warning">Изменить</a>
-                    </div>
-                    <div>
-                        <a href="{% url 'delete_url' i.pk %}" class="btn btn-danger">Удалить</a>
+        {% for i in object_list %}
+            <div class="row no-gutters mb-3 card-1">
+                <div class="col-md-4">
+                    <a href="{% url 'details_url' i.pk %}"><img src="{{ i.photo.url }}" class="card-img"
+                                                                alt="{{ i.sign }}"></a>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ i.sign }}</h5>
+                        <p class="card-text">Author: {{ i.author }}</p>
+                        <p class="card-text">
+                            <small class="text-muted">{{ i.date_create }}</small>
+                        </p>
+                        <p class="card-text">
+                            <small class="text-muted">likes: {{ i.likes }}</small>
+                        </p>
+                        {% if user.is_authenticated %}
+                        <div>
+                            <a href="{% url 'change_url' i.pk %}" class="btn btn-warning">Изменить</a>
+                        </div>
+                        {% endif %}
+                    {% if user.is_authenticated or perms.webapp.delete_photo %}
+                        <div>
+                            <a href="{% url 'delete_url' i.pk %}" class="btn btn-danger">Удалить</a>
+                        </div>
+                    {% endif %}
                     </div>
                 </div>
             </div>
-        </div>
 
 
-    {% endfor %}
-</div>
+        {% endfor %}
+    </div>
 {% endblock %}

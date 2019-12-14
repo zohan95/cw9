@@ -4,5 +4,4 @@ from .models import Photo, Comment
 admin.site.register(Photo)
 admin.site.register(Comment)
 
-
 # Register your models here.

@@ -11,24 +11,35 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ objecto.sign }}</h5>
                     <p class="card-text">Author: {{ objecto.author }}</p>
+                {% if user.is_authenticated %}
                     {% if request.user in objecto.liked.all %}
-                        <button id='like-button' class="btn btn-danger" onclick="dislikePress({{ objecto.id }})">Dislike</button>
-                        <button id="dislike-button" class="btn btn-success" onclick="likePress({{ objecto.id }})" style="display: none">Like</button>
+                        <button id='like-button' class="btn btn-danger" onclick="dislikePress({{ objecto.id }})">
+                            Dislike
+                        </button>
+                        <button id="dislike-button" class="btn btn-success" onclick="likePress({{ objecto.id }})"
+                                style="display: none">Like
+                        </button>
                     {% else %}
-                        <button id='like-button' class="btn btn-danger" onclick="dislikePress({{ objecto.id }})" style="display: none">Dislike</button>
-                        <button id="dislike-button" class="btn btn-success" onclick="likePress({{ objecto.id }})">Like</button>
+                        <button id='like-button' class="btn btn-danger" onclick="dislikePress({{ objecto.id }})"
+                                style="display: none">Dislike
+                        </button>
+                        <button id="dislike-button" class="btn btn-success" onclick="likePress({{ objecto.id }})">Like
+                        </button>
 
                     {% endif %}
+                {% endif %}
                     <p class="card-text">
                         <small class="text-muted">{{ objecto.date_create }}</small>
                     </p>
                     <p class="card-text">
-                        likes:<small class="text-muted" id="likes-text"> {{ objecto.likes }}</small>
+                        likes:
+                        <small class="text-muted" id="likes-text"> {{ objecto.likes }}</small>
                     </p>
                 </div>
             </div>
         </div>
-    </div>
+    </div>{% if user.is_authenticated %}
+
     <div class="container comment_input card-1">
         <form onsubmit="event.preventDefault()">
             <label data-id="{{ object.id }}" data-author="{{ object.author }}"
@@ -40,6 +51,7 @@
             </button>
         </form>
     </div>
+    {% endif %}
     <div class="container card-1 comments">
         {% for i in comments %}
             <div class="card text-center mt-2" id="comment_id_{{ i.pk }}">
@@ -48,7 +60,9 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">{{ i.text }}</p>
+                    {% if user.is_authenticated or perms.webapp.delete_comment %}
                     <button class="btn btn-danger" onclick="commentDelete({{ i.pk }})">x</button>
+                    {% endif %}
                 </div>
                 <div class="card-footer text-muted">
                     {{ i.date_create }}

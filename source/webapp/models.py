@@ -8,7 +8,8 @@ class Photo(models.Model):
     sign = models.CharField(max_length=63, verbose_name='Подпись')
     date_create = models.DateTimeField(auto_now_add=True)
     likes = models.IntegerField(default=0, verbose_name='Лайки')
-    author = models.ForeignKey(User, verbose_name='Автор', on_delete=models.PROTECT, related_name='photo_user', null=False, blank=True)
+    author = models.ForeignKey(User, verbose_name='Автор', on_delete=models.PROTECT, related_name='photo_user',
+                               null=False, blank=True)
     liked = models.ManyToManyField(User, related_name='user_love', blank=True)
 
     def __str__(self):
@@ -23,10 +24,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text[:10]
-
-
-
-
-
-
-

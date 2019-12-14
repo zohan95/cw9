@@ -45,7 +45,7 @@ function commentCreate() {
             let myDiv = $('.comments');
             let newDiv = $(document.createElement('div'));
             newDiv.addClass('card text-center mt-2');
-            newDiv.attr('id', 'comment_id_'+response.id);
+            newDiv.attr('id', 'comment_id_' + response.id);
             let newDiv1 = $(document.createElement('div'));
             newDiv1.addClass('card-header');
             let hText = $(document.createElement('h4'));
@@ -95,8 +95,8 @@ function commentDelete(num) {
         },
 
         success: function () {
-            let myDiv = $('#comment_id_'+num);
-            myDiv.css('display','none');
+            let myDiv = $('#comment_id_' + num);
+            myDiv.css('display', 'none');
         }
     })
 }
@@ -117,12 +117,12 @@ function likePress(num) {
         headers: {
             "X-CSRFToken": csrftoken
         },
-        data:JSON.stringify({'operation':'plus','user':curUser}),
+        data: JSON.stringify({'operation': 'plus', 'user': curUser}),
 
         success: function (response) {
-            let myDiv = $('#comment_id_'+num);
-            myDiv.css('display','none');
-            $('#like-button').css('display','block');
+            let myDiv = $('#comment_id_' + num);
+            myDiv.css('display', 'none');
+            $('#like-button').css('display', 'block');
             $('#dislike-button').css('display', 'none');
             console.log(response.newlike);
             let myStat = $('#likes-text');
@@ -147,14 +147,14 @@ function dislikePress(num) {
         headers: {
             "X-CSRFToken": csrftoken
         },
-        data:JSON.stringify({'operation':'minus','user':curUser}),
+        data: JSON.stringify({'operation': 'minus', 'user': curUser}),
 
         success: function (response) {
-            let myDiv = $('#comment_id_'+num);
-            myDiv.css('display','none');
+            let myDiv = $('#comment_id_' + num);
+            myDiv.css('display', 'none');
             let myStat = $('#likes-text');
             myStat.text(response.newlike);
-            $('#dislike-button').css('display','block');
+            $('#dislike-button').css('display', 'block');
             $('#like-button').css('display', 'none')
         }
     });

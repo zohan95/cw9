@@ -10,4 +10,3 @@ urlpatterns = [
     path('create/', PhotoCreateView.as_view(), name='create_url'),
     path('accounts/', include('django.contrib.auth.urls'))
 ]
-

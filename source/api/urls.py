@@ -8,7 +8,6 @@ router = routers.DefaultRouter()
 router.register(r'comments', views.CommentViewSet)
 router.register(r'photos', views.PhotoViewSet)
 
-
 app_name = 'api'
 
 urlpatterns = [

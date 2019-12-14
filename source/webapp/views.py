@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -28,22 +29,34 @@ class DetailedView(DetailView):
         return context
 
 
-class ChangeView(LoginRequiredMixin, PermissionRequiredMixin,UpdateView):
-    permission_required = 'webapp.change_photo'
+class ChangeView(UpdateView):
+    permission_required = 'webapp:change_photo'
     model = Photo
     template_name = 'update.html'
     fields = ['photo', 'sign']
     success_url = reverse_lazy('index_url')
 
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.author != self.request.user or self.request.user.has_perm('webapp:delete_photo'):
+            return super().dispatch(request, *args, **kwargs)
+        raise PermissionDenied()
 
-class PhotoDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
-    permission_required = 'webapp.delete_photo'
+
+class PhotoDeleteView(LoginRequiredMixin, DeleteView):
+    permission_required = 'webapp:delete_photo'
     model = Photo
     template_name = 'delete.html'
     success_url = reverse_lazy('index_url')
 
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.author != self.request.user or self.request.user.has_perm('webapp:delete_photo'):
+            return super().delete(request, *args, **kwargs)
+        raise PermissionDenied()
 
-class PhotoCreateView(LoginRequiredMixin,CreateView):
+
+class PhotoCreateView(LoginRequiredMixin, CreateView):
     model = Photo
     template_name = 'create.html'
     fields = ['photo', 'sign']
