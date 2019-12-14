@@ -4,11 +4,11 @@ from django.db import models
 
 
 class Photo(models.Model):
-    photo = models.ImageField(verbose_name='Фотография', upload_to='uploads')
+    photo = models.ImageField(verbose_name='Фотография', upload_to='')
     sign = models.CharField(max_length=63, verbose_name='Подпись')
     date_create = models.DateTimeField(auto_now_add=True)
     likes = models.IntegerField(default=0, verbose_name='Лайки')
-    author = models.ForeignKey(User, verbose_name='Автор', on_delete=models.PROTECT, related_name='photo_user')
+    author = models.ForeignKey(User, verbose_name='Автор', on_delete=models.PROTECT, related_name='photo_user', null=False, blank=True)
     liked = models.ManyToManyField(User, related_name='user_liked', blank=True)
 
     def __str__(self):

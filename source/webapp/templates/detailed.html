@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="continer">
+        <div class="row no-gutters mb-3 card-1">
+            <div class="col-md-4">
+                <img src="{{ objecto.photo.url }}" class="card-img" alt="{{ objecto.sign }}">
+            </div>
+            <div class="col-md-8" style="background-color: lightgray">
+                <div class="card-body">
+                    <h5 class="card-title">{{ objecto.sign }}</h5>
+                    <p class="card-text">Author: {{ objecto.author }}</p>
+                    <p class="card-text">
+                        <small class="text-muted">{{ objecto.date_create }}</small>
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted">likes: {{ objecto.likes }}</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container card-1">
+    {% for i in comments %}
+        <div class="card text-center">
+            <div class="card-header">
+                <h4>{{ i.author }}</h4>
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{ i.text }}</p>
+            </div>
+            <div class="card-footer text-muted">
+                {{ i.date_create }}
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+{% endblock %}

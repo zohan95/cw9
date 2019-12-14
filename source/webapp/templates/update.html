@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form action="{% url "change_url" pk=object.pk %}" method="POST" enctype="multipart/form-data">
+        {% include 'partial/form.html' %}
+        <input type="submit" value="Сохранить" class="btn btn-primary">
+    </form>
+{% endblock %}
