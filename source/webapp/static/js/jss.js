@@ -69,7 +69,7 @@ function commentCreate() {
             newDiv3.addClass('card-footer text-muted');
             newDiv3.text(response.date_create);
             newDiv.append(newDiv3);
-            myDiv.append(newDiv);
+            myDiv.prepend(newDiv);
             $('#comment-text').val('')
 
         },
