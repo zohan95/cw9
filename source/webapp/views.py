@@ -1,6 +1,8 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 from .models import Photo, Comment
 
@@ -11,6 +13,7 @@ class IndexClass(ListView):
     ordering = ['-date_create']
 
 
+@method_decorator(ensure_csrf_cookie, name='dispatch')
 class DetailedView(DetailView):
     model = Photo
     template_name = 'detailed.html'

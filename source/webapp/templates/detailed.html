@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="continer">
+    <input type="text" value="{{ request.user }}" id="cur_user_id" hidden>
+    <div class="continer mt-1">
         <div class="row no-gutters mb-3 card-1">
             <div class="col-md-4">
                 <img src="{{ objecto.photo.url }}" class="card-img" alt="{{ objecto.sign }}">
@@ -10,30 +11,49 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ objecto.sign }}</h5>
                     <p class="card-text">Author: {{ objecto.author }}</p>
+                    {% if request.user in objecto.liked.all %}
+                        <button id='like-button' class="btn btn-danger" onclick="dislikePress({{ objecto.id }})">Dislike</button>
+                        <button id="dislike-button" class="btn btn-success" onclick="likePress({{ objecto.id }})" style="display: none">Like</button>
+                    {% else %}
+                        <button id='like-button' class="btn btn-danger" onclick="dislikePress({{ objecto.id }})" style="display: none">Dislike</button>
+                        <button id="dislike-button" class="btn btn-success" onclick="likePress({{ objecto.id }})">Like</button>
+
+                    {% endif %}
                     <p class="card-text">
                         <small class="text-muted">{{ objecto.date_create }}</small>
                     </p>
                     <p class="card-text">
-                        <small class="text-muted">likes: {{ objecto.likes }}</small>
+                        likes:<small class="text-muted" id="likes-text"> {{ objecto.likes }}</small>
                     </p>
                 </div>
             </div>
         </div>
     </div>
-    <div class="container card-1">
-    {% for i in comments %}
-        <div class="card text-center">
-            <div class="card-header">
-                <h4>{{ i.author }}</h4>
-            </div>
-            <div class="card-body">
-                <p class="card-text">{{ i.text }}</p>
-            </div>
-            <div class="card-footer text-muted">
-                {{ i.date_create }}
-            </div>
-        </div>
-    {% endfor %}
+    <div class="container comment_input card-1">
+        <form onsubmit="event.preventDefault()">
+            <label data-id="{{ object.id }}" data-author="{{ object.author }}"
+                   id="comment_label_id">Комментарий:<textarea id="comment-text" cols="30"
+                                                               rows="10"></textarea></label>
+            <br>
+            <button class="btn btn-success"
+                    onclick='commentCreate()' type="submit" id="comment_save_button">Ok
+            </button>
+        </form>
     </div>
-
+    <div class="container card-1 comments">
+        {% for i in comments %}
+            <div class="card text-center mt-2" id="comment_id_{{ i.pk }}">
+                <div class="card-header">
+                    <h4>{{ i.author }}</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ i.text }}</p>
+                    <button class="btn btn-danger" onclick="commentDelete({{ i.pk }})">x</button>
+                </div>
+                <div class="card-footer text-muted">
+                    {{ i.date_create }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
