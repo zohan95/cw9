@@ -20,7 +20,7 @@ class DetailedView(DetailView):
         context = super().get_context_data()
         curr_image = Photo.objects.get(pk=self.kwargs.get('pk'))
         comments = Comment.objects.filter(photo=curr_image)
-        context['comments']=comments
+        context['comments'] = comments
         return context
 
 
